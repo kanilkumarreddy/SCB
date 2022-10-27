@@ -55,7 +55,7 @@ ROOT_URLCONF = 'scb_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["scb\templates"],
+        'DIRS': ["scb/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +76,11 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'Kanini',
+        'USER':'postgres',
+        'PASSWORD':'Anil@1234',
+        'HOST':'localhost'
     }
 }
 
