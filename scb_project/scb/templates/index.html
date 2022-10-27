@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>Model</title>
+</head>
+<style>
+ .box{
+    width: 406px;
+    height: fit-content;
+border-radius:7px;
+position: relative;
+padding-top: 20px;
+padding-left: 55px;
+padding-right: 55px;
+padding-bottom:20px;
+box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.07);
+cursor: pointer;
+background-color: white;
+margin-left: 370px;
+margin-top: 123px;
+ }
+
+ .btn{
+ width: 120px;
+ margin-top:10px;
+ }
+.modelbtn{
+  margin-top:20px;
+  border:none;
+  padding:7px;
+  cursor:pointer;
+  border:1px solid gray;
+}
+
+.modelbtn:hover {
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+  -moz-filter: grayscale(0%);
+  -webkit-transform: scale(1.02);
+  -moz-transform: scale(1.02);
+}
+.msg{
+ margin-bottom:20px;
+}
+
+select{
+height: 38px;
+  width: 300px;
+  font-size:15px;
+  padding-left:5px;
+}
+</style>
+<body>
+
+<div class="container">
+    <div class="box">
+        <br>
+        <form action="" method="POST" class="post-form" enctype="multipart/form-data" style="margin-top:-10px;">
+            {% csrf_token %}
+            <label for="Document"><h5>Upload Document:</h5></label><br>
+            <input type="file" id="Document" name="Document" required><br>
+            <br>
+       <label  style="font-weight:500;">Select number of models :</label><br>
+             <select name="Model_No" id="choice" onChange=selectChange(this.value) required>
+                         <option selected="selected" disabled value="0">Select</option>
+                         {% for value in No_model %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {%endfor%}
+             </select><br><br>
+            <div id="results">
+                <div class="section" style="display:none;">
+                    <label  style="font-weight:500;">Select 1 Model:</label><br>
+                    <select name="model" id = "0" onchange="Mymodel(this);">
+                        <option disabled selected>Select</option>
+                        {% for value in form %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {%endfor%}
+                    </select><br><br>
+                </div>
+               <div id ="selected_dropdown">
+               </div>
+                </div>
+
+            {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-danger" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+            <button type="submit" class="btn btn-success" onclick="show_models()">Save</button>
+        </form><br>
+</div>
+    </div>
+</body>
+<script>
+function selectChange(val) {
+    console.log(val);
+// var options = new Array();
+// $.each(data, function(val, option) {
+    // options.push('<option value="' + val + '">'+ option.date_time +'</option>');
+// });
+var $newdiv;
+    for (var i = 1; i < val+1; i++) {
+        $newdiv = $('<div class="section" style="display:none;"><label style="font-weight:500;">Select '+ parseInt(i+1)  +  '   Model:</label><br><select name="model" id ="'+ i + '" onchange="Mymodel(this);"><option disabled selected>Select</option></select><br><br>');
+        $('#selected_dropdown').append($newdiv);
+
+}
+}
+
+function Mymodel(ele){
+    var x = ele.value;
+    var id = ele.id;
+    // var arr = new Array();
+    // $('#'+id+' option').each(function(){
+    // arr.push($(this).val());
+    // });
+    // console.log(arr)
+    console.log('select element id = ' + id);
+    console.log('select element id = ' + '#'+id+' option');
+
+    $.ajax({
+      url:'',
+      type: "GET",
+      data: {
+        data: x
+      },
+      success : function(html) {
+            let id_1  = + id
+            console.log(id_1)
+            console.log(id_1+1)
+            id_1 =id_1+1
+            id_1 = id_1.toString()
+            id_1 = "#"+id_1
+            console.log(id_1)
+            $(id_1)
+    .find('option')
+    .remove()
+    .end()
+    .append('<option selected="+"selected"+ "disabled value="+"0"+">Select</option>')
+    .val('0')
+;
+            $(id_1).append(html);
+             // $('.row.replace').html(data);
+         }
+      });
+
+    console.log('DONE');
+// <!--   var e = document.getElementById("0");-->
+// <!--   var value = e.value;-->
+// <!--   var text = e.options[e.selectedIndex].text;-->
+// <!--   console.log(text)-->
+// <!--   if (text == "Extraction"){-->
+// <!--     console.log("Do Nothing")-->
+// <!--     $('#1').append("<option value=Transformation>Transformation</option>");-->
+// <!--   }-->
+// <!--   else{-->
+// <!--     alert("For Transformation model you need to select Extraction model")-->
+// <!--   }-->
+
+}
+
+
+  $('#choice').on('change', function() {
+  var currentVal = $(this).val();
+  var sections  = $('.section');
+
+  if (currentVal == 0) {
+    sections.show();
+  } else {
+    sections.hide().slice(0, currentVal).show();
+  }
+});
+
+
+</script>
+</html>
