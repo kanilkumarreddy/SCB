@@ -77,7 +77,7 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Kanini',
+        'NAME': 'Kgccanini',
         'USER': 'postgres',
         'PASSWORD': 'Anil@1234',
         'HOST': 'localhost',
